@@ -5,6 +5,10 @@ namespace Movie_API.Models
 {
     public class Watchlist
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
         [ForeignKey(nameof(User))]
         public string UserId { get; set; }
         public User User { get; set; }

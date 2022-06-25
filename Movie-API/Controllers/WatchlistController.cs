@@ -71,27 +71,30 @@ namespace Movie_API.Controllers
 
                 var createdWatchlist = _mapper.Map<WatchlistDTO>(watchlistEntity);
 
-                return CreatedAtRoute("WatchlistOfUser", new { id = createdWatchlist.UserID }, createdWatchlist);
+                return CreatedAtRoute("WatchlistOfUser", new { id = createdWatchlist.Id }, createdWatchlist);
             }
             catch (Exception ex)
             {
                 _logger.LogError($"Something went wrong inside AddToWatchlist action: {ex.Message}");
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, ex.Message);
             }
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteFromWatchlist(Watchlist watchlist)
+        public async Task<IActionResult> DeleteFromWatchlist(WatchlistDTO watchlistDTO)
         {
             try
             {
-                if (watchlist == null)
+                if (watchlistDTO == null)
                 {
                     _logger.LogError($"Watchlist info not found in db.");
                     return NotFound();
                 }
-                await _watchlistRepo.DeleteFromWatchlist(watchlist);
-                _logger.LogInfo($"Deleted movie with id: {watchlist.MovieId} of user {watchlist.UserId}");
+
+                var watchlistEntity = _mapper.Map<Watchlist>(watchlistDTO);
+
+                await _watchlistRepo.DeleteFromWatchlist(watchlistEntity);
+                _logger.LogInfo($"Deleted movie with id: {watchlistDTO.MovieId} of user {watchlistDTO.UserID}");
 
                 return NoContent();
             }
