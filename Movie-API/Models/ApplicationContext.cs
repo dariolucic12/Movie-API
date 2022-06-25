@@ -17,8 +17,8 @@ namespace Movie_API.Models
             modelBuilder.Entity<Watchlist>().HasNoKey();
         }
 
-        DbSet<Watchlist> Watchlists { get; set; }
-        DbSet<Review> Reviews { get; set; }
+        public DbSet<Watchlist> Watchlists { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
     }
 }

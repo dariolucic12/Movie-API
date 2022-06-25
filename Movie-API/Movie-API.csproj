@@ -28,7 +28,6 @@
   <ItemGroup>
     <Folder Include="Logger\" />
     <Folder Include="Services\" />
-    <Folder Include="Repository\" />
   </ItemGroup>
 
 </Project>

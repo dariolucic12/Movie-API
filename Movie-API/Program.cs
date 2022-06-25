@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using Movie_API.Models;
+using Movie_API.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddScoped<IWatchlistRepo, WatchlistRepo>();
+builder.Services.AddScoped<IReviewRepo, ReviewRepo>();
 
 builder.Services.AddDbContext<ApplicationContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("MovieDb"))
