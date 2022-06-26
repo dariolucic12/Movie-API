@@ -48,21 +48,23 @@ namespace Movie_API.Controllers
             }
         }
 
+        [Route("movieReview/{id}")]
         [HttpGet]
-        public async Task<IActionResult> GetReview(Review reviewOfMovie)
+        public async Task<IActionResult> GetReview(int id)
         {
             try
             {
-                var reviews = await _reviewRepo.GetReview(reviewOfMovie);
+
+                var reviews = await _reviewRepo.GetReview(id);
 
                 if (reviews == null)
                 {
-                    _logger.LogError($"Review of user with id: {reviewOfMovie.UserId} of movie {reviewOfMovie.MovieId}, hasn't been found in db.");
+                    _logger.LogError($"Review with id: {id} hasn't been found in db.");
                     return NotFound();
                 }
                 else
                 {
-                    _logger.LogInfo($"Returned review of user with id: {reviewOfMovie.UserId} of movie {reviewOfMovie.MovieId}");
+                    _logger.LogInfo($"Returned review with id: {id}");
                     var reviewResult = _mapper.Map<ReviewDTO>(reviews);
                     return Ok(reviewResult);
                 }
@@ -97,7 +99,7 @@ namespace Movie_API.Controllers
 
                 var createdReview = _mapper.Map<ReviewDTO>(reviewEntity);
 
-                return CreatedAtRoute("ReviewOfUser", new { id = createdReview.UserId }, createdReview);
+                return CreatedAtRoute("ReviewOfUser", new { id = createdReview.Id }, createdReview);
             }
             catch (Exception ex)
             {
@@ -107,7 +109,7 @@ namespace Movie_API.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteReview(Review review)
+        public async Task<IActionResult> DeleteReview(ReviewDTO review)
         {
             try
             {
@@ -116,7 +118,8 @@ namespace Movie_API.Controllers
                     _logger.LogError($"Review info not found in db.");
                     return NotFound();
                 }
-                await _reviewRepo.DeleteReview(review);
+                var reviewEntity = _mapper.Map<Review>(review);
+                await _reviewRepo.DeleteReview(reviewEntity);
                 _logger.LogInfo($"Deleted review with movie id: {review.MovieId} of user {review.UserId}");
 
                 return NoContent();
@@ -147,7 +150,7 @@ namespace Movie_API.Controllers
 
                 var review = _mapper.Map<Review>(reviewDTO);
 
-                var reviewEntity = await _reviewRepo.GetReview(review);
+                var reviewEntity = await _reviewRepo.GetReview(review.Id);
                 if (reviewEntity == null)
                 {
                     _logger.LogError($"Review of user with id: {reviewDTO.MovieId}, hasn't been found in db.");

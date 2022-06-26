@@ -6,7 +6,7 @@ namespace Movie_API.Repository
     {
         Task<List<Review>> GetReviewsOfUser(string id);
 
-        Task<Review> GetReview(Review review);
+        Task<Review> GetReview(int id);
 
         Task AddReview(Review review);
 
