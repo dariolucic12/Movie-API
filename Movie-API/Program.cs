@@ -7,6 +7,8 @@ using Movie_API.Repository;
 using Movie_API.Services;
 using NLog;
 
+var corsPolicy = "CorsPolicy";
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -25,6 +27,17 @@ builder.Services.AddDbContext<ApplicationContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("MovieDb"))
     );
 
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy(name: corsPolicy,
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+        });
+});
+
 builder.Services.AddAuthentication();
 builder.Services.ConfigureIdentity();
 builder.Services.ConfigureJWT(builder.Configuration);
@@ -37,6 +50,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(corsPolicy);
 
 app.UseHttpsRedirection();
 
