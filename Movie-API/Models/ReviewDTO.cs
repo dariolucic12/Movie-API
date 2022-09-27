@@ -4,6 +4,8 @@ namespace Movie_API.Models
 {
     public class ReviewDTO
     {
+        public int Id { get; set; }
+
         [Required]
         public string UserId { get; set; }
 
@@ -13,5 +15,13 @@ namespace Movie_API.Models
         public int? Rating { get; set; }
 
         public string? Comment { get; set; }
+
+        public string FullTitle { get; set; }
+
+        public string Image { get; set; }
+
+        public string IMDbRating { get; set; }
+
+        public string IMDbRatingCount { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace Movie_API.Models
         [StringLength(15, ErrorMessage = "Length must be less then 15 characters")]
         public string Password { get; set; }
     }
-    public class UserDTO
+    public class UserDTO : LoginDTO
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

@@ -26,6 +26,7 @@ namespace Movie_API.Repository
             if (_context != null)
             {
                 //var deletedMovie = _context.Watchlists.Where(watch => watch.UserId.Equals(watchlist.UserId) && watch.MovieId.Equals(watchlist.MovieId));
+                //_context.Watchlists.Remove((Watchlist)deletedMovie);
                 _context.Watchlists.Remove(watchlist);
                 await _context.SaveChangesAsync();
             }
@@ -36,6 +37,15 @@ namespace Movie_API.Repository
             if (_context != null)
             {
                 return await _context.Watchlists.Where(watchlist => watchlist.UserId.Equals(id)).ToListAsync();
+            }
+            return null;
+        }
+
+        public async Task<Watchlist> GetWatchlist(int id)
+        {
+            if (_context != null)
+            {
+                return await _context.Watchlists.Where(watchlist => watchlist.Id.Equals(id)).FirstOrDefaultAsync();
             }
             return null;
         }

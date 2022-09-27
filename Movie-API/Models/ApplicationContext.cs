@@ -13,8 +13,6 @@ namespace Movie_API.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Review>().HasNoKey();
-            modelBuilder.Entity<Watchlist>().HasNoKey();
         }
 
         public DbSet<Watchlist> Watchlists { get; set; }

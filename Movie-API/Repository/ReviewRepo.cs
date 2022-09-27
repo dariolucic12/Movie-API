@@ -29,11 +29,11 @@ namespace Movie_API.Repository
             }
         }
 
-        public async Task<Review> GetReview(Review review)
+        public async Task<Review> GetReview(int id)
         {
             if (_context != null)
             {
-                return await _context.Reviews.Where(rev => rev.UserId.Equals(review.UserId) && rev.MovieId.Equals(review.MovieId)).FirstOrDefaultAsync();
+                return await _context.Reviews.Where(rev => rev.Id.Equals(id)).FirstOrDefaultAsync();
             }
             return null;
         }

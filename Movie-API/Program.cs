@@ -1,9 +1,13 @@
 
 using Microsoft.EntityFrameworkCore;
+using Movie_API;
 using Movie_API.Logger;
 using Movie_API.Models;
 using Movie_API.Repository;
+using Movie_API.Services;
 using NLog;
+
+var corsPolicy = "CorsPolicy";
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,10 +21,26 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<IWatchlistRepo, WatchlistRepo>();
 builder.Services.AddScoped<IReviewRepo, ReviewRepo>();
 builder.Services.AddSingleton<ILoggerManager, LoggerManager>();
+builder.Services.AddScoped<IAuthManager, AuthManager>();
 
 builder.Services.AddDbContext<ApplicationContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("MovieDb"))
     );
+
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy(name: corsPolicy,
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+        });
+});
+
+builder.Services.AddAuthentication();
+builder.Services.ConfigureIdentity();
+builder.Services.ConfigureJWT(builder.Configuration);
 
 var app = builder.Build();
 
@@ -31,7 +51,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(corsPolicy);
+
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
