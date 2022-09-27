@@ -47,7 +47,8 @@ namespace Movie_API.Services
         {
             var claims = new List<Claim>
             {
-                new Claim (ClaimTypes.Name, _user.Id)
+                new Claim (ClaimTypes.Name, _user.Id),
+                new Claim (ClaimTypes.Name, _user.FirstName + ' ' + _user.LastName)
             };
 
             return claims;

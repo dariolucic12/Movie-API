@@ -80,21 +80,30 @@ namespace Movie_API.Controllers
             }
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteFromWatchlist(WatchlistDTO watchlistDTO)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteFromWatchlist(int id)
+        //public async Task<IActionResult> DeleteFromWatchlist(WatchlistDTO watchlistDTO)
         {
             try
             {
-                if (watchlistDTO == null)
+                var watchlist = await _watchlistRepo.GetWatchlist(id);
+                if (watchlist == null)
                 {
-                    _logger.LogError($"Watchlist info not found in db.");
+                    _logger.LogError($"Watchlist with id: {id}, hasn't been found in db.");
                     return NotFound();
                 }
+                await _watchlistRepo.DeleteFromWatchlist(watchlist);
+                _logger.LogInfo($"Deleted product with id: {id}");
+                //if (watchlistDTO == null)
+                //{
+                //    _logger.LogError($"Watchlist info not found in db.");
+                //    return NotFound();
+                //}
 
-                var watchlistEntity = _mapper.Map<Watchlist>(watchlistDTO);
+                //var watchlistEntity = _mapper.Map<Watchlist>(watchlistDTO);
 
-                await _watchlistRepo.DeleteFromWatchlist(watchlistEntity);
-                _logger.LogInfo($"Deleted movie with id: {watchlistDTO.MovieId} of user {watchlistDTO.UserID}");
+                //await _watchlistRepo.DeleteFromWatchlist(watchlistEntity);
+                //_logger.LogInfo($"Deleted movie with id: {watchlistDTO.MovieId} of user {watchlistDTO.UserID}");
 
                 return NoContent();
             }

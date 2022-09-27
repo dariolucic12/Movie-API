@@ -19,5 +19,17 @@ namespace Movie_API.Models
         public int? Rating { get; set; }
 
         public string? Comment { get; set; }
+
+        [Required]
+        public string FullTitle { get; set; }
+
+        [Required]
+        public string Image { get; set; }
+
+        [Required]
+        public string IMDbRating { get; set; }
+
+        [Required]
+        public string IMDbRatingCount { get; set; }
     }
 }

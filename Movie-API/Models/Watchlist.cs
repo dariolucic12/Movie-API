@@ -15,5 +15,17 @@ namespace Movie_API.Models
 
         [Required]
         public string MovieId { get; set; }
+
+        [Required]
+        public string FullTitle { get; set; }
+
+        [Required]
+        public string Image { get; set; }
+
+        [Required]
+        public string IMDbRating { get; set; }
+
+        [Required]
+        public string IMDbRatingCount { get; set; }
     }
 }
